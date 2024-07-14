@@ -25,6 +25,18 @@
   ansible.builtin.debug:
     msg: "{{ role_path }}"
 
+- name: Display contents of {{ role_path }}/files
+  ansible.builtin.debug:
+    msg: "{{ lookup('fileglob', role_path + '/files/*') }}"
+
+- name: Display contents of playbook_dir
+  ansible.builtin.debug:
+    msg: "{{ playbook_dir }}"
+
+- name: Display contents of {{ playbook_dir }}/files
+  ansible.builtin.debug:
+    msg: "{{ lookup('fileglob', playbook_dir + '/files/*') }}"
+
 - name: Check Vault package file (local)
   stat:
     path: "{{ role_path }}/files/{{ vault_pkg }}"
