@@ -21,6 +21,10 @@
     - ansible_distribution == "Debian"
     - (ansible_distribution_version == 'buster/sid') or (ansible_distribution_version is version(8.5, '>'))
 
+- name: Debug contents of role_path mysql_variables
+  ansible.builtin.debug:
+    msg: "{{ role_path }}"
+
 - name: Check Vault package file (local)
   stat:
     path: "{{ role_path }}/files/{{ vault_pkg }}"
