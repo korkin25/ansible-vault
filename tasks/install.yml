@@ -21,21 +21,20 @@
     - ansible_distribution == "Debian"
     - (ansible_distribution_version == 'buster/sid') or (ansible_distribution_version is version(8.5, '>'))
 
-- name: Debug contents of role_path mysql_variables
-  ansible.builtin.debug:
-    msg: "{{ role_path }}"
+- name: List files in {{ playbook_dir }}/files
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/files"
+    recurse: no
+  register: files_in_playbook_dir_files
+  delegate_to: 127.0.0.1
 
-- name: Display contents of {{ role_path }}/files
-  ansible.builtin.debug:
-    msg: "{{ lookup('fileglob', role_path + '/files/*') }}"
-
-- name: Display contents of playbook_dir
-  ansible.builtin.debug:
-    msg: "{{ playbook_dir }}"
-
-- name: Display contents of {{ playbook_dir }}/files
-  ansible.builtin.debug:
-    msg: "{{ lookup('fileglob', playbook_dir + '/files/*') }}"
+- name: Copy contents of {{ playbook_dir }}/files to role_path/files
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ role_path }}/files/"
+  with_items: "{{ files_in_playbook_dir_files.files }}"
+  when: item.path is search("{{ playbook_dir }}/files/.*")
+  delegate_to: 127.0.0.1
 
 - name: Check Vault package file (local)
   stat:
