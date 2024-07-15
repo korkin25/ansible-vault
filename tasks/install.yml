@@ -28,6 +28,11 @@
   register: files_in_playbook_dir_files
   delegate_to: 127.0.0.1
 
+- name: Display current ditro files in {{ playbook_dir }}/files (local)
+  debug:
+    var: files_in_playbook_dir_files.files
+  delegate_to: 127.0.0.1
+
 - name: Copy contents of {{ playbook_dir }}/files to role_path/files
   copy:
     src: "{{ item.path }}"
