@@ -33,7 +33,7 @@
     src: "{{ item.path }}"
     dest: "{{ role_path }}/files/"
   with_items: "{{ files_in_playbook_dir_files.files }}"
-  when: item.path is search("{{ playbook_dir }}/files/.*")
+  when: item.path is search(playbook_dir + '/files/.*')
   delegate_to: 127.0.0.1
 
 - name: Check Vault package file (local)
